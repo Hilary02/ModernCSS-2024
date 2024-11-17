@@ -1,5 +1,3 @@
-<!-- components/Iframes.vue -->
-
 <template>
   <div>
     <iframe
@@ -8,8 +6,8 @@
       allowtransparency="true"
       class="cp_embed_iframe"
       frameborder="0"
-      height="400"
       width="100%"
+      height="400"
       name="cp_embed_1"
       scrolling="no"
       src="https://codepen.io/rachelandrew/embed/BNXyQa?height=565&amp;theme-id=0&amp;slug-hash=BNXyQa&amp;default-tab=result&amp;user=rachelandrew&amp;name=cp_embed_1"

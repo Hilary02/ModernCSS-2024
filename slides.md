@@ -7,22 +7,22 @@ class: text-center
 highlighter: shiki
 lineNumbers: true
 info: |
-  ## 明日から使えるモダンCSS
+  ## 今日から使えるモダンCSS
    by hilary
 drawings:
   persist: false
 transition: slide-left
-title: 明日から使えるモダンCSS
+title: 今日から使えるモダンCSS
 ---
 
-<div style="background: linear-gradient(90deg, #82f369 0%, #91cfff 40%, #ffaacc 100%);
+<div style="background: linear-gradient(90deg, #aaff00 0%, #91cfff 40%, #0ff 100%);
 color: transparent;
 -webkit-background-clip: text;
 background-clip: text;
 -webkit-text-fill-color: transparent;
 text-fill-color: transparent;" >
 
-# 明日から使えるモダンCSS
+# 今日から使えるモダンCSS
 </div>
 
 ## 最新のスタイリング手法の紹介
@@ -53,19 +53,29 @@ text-fill-color: transparent;" >
 - クラス名の衝突、命名問題
 - 複雑なセレクタ
 
-
 ---
 layout: section
 ---
 
-# Styleの紹介
+# スタイルの紹介
+
+---
+
+# 紹介するスタイル
+- Grid Layout
+- Flexbox
+- Filter効果
+- :has() セレクタ
+- CSS Custom Properties
+- CSS Nesting
+- コンテナクエリ @container
 
 ---
 
 # Grid Layout
 
-- 2次元レイアウトの完全な制御
-- レスポンシブデザインの簡素化
+- 2次元レイアウトの制御
+- レスポンシブデザイン
 - 複雑なレイアウトの実現
 
 ```css
@@ -86,22 +96,16 @@ layout: section
 
 ---
 
-# Grid Layout
+# Grid Layoutの余談
 
 - IE11ではサポートされていなかった...
 - vendor prefixで基本的な機能は使えたが、一部の機能は使えなかった
 
 ![](./grid-support.jpg)
 
-<footerNote>https://caniuse.com/?search=grid</footerNote>
+<footerNote>https://web.archive.org/web/20211022054307/https://developer.mozilla.org/ja/docs/Web/CSS/grid</footerNote>
 
----
-
-# Gridのトレーニング
-
-<FlexDemo />
-
-<FooterNote>https://developer.mozilla.org/ja/docs/Web/CSS/flex</FooterNote>
+<!-- https://caniuse.com/?search=grid -->
 
 ---
 
@@ -129,14 +133,17 @@ layout: section
 
 ---
 
-# Flexboxのトレーニング
+# GridやFlexboxで遊べるページ
 
+- [Grid Garden](https://cssgridgarden.com/#ja)
+- [CSS Grid Mastery Quiz](https://css-grid-mastery.uhyo.space/?lang=ja)
 - [Flexbox Froggy](https://flexboxfroggy.com/)
-ゲーム形式でFlexboxの理解を深められる
+
+ゲームを通じてプロパティを知ることができる
 
 ---
 
-# CSS Filters と Blur効果
+# Filter効果
 
 ```css
 .glass-effect {
@@ -149,10 +156,14 @@ layout: section
 }
 ```
 
-- 画像加工のCSS実装
-- モダンなUI表現の実現
-- パフォーマンスの最適化
-- disable画像などは配信する必要がないかも...
+- 画像加工がCSSでできる
+- 簡単にUI表現を実現
+- disable画像などをこれだけで実現できる
+- 2024年で最も使われた機能(※1)
+
+<FooterNote>より詳しい紹介: https://www.asobou.co.jp/blog/web/css-filter <br/>
+※1 https://2024.stateofcss.com/en-US/features/
+</FooterNote>
 
 ---
 
@@ -161,6 +172,7 @@ layout: section
 <FilterDemo />
 
 <FooterNote>https://developer.mozilla.org/ja/docs/Web/CSS/filter</FooterNote>
+
 
 ---
 
@@ -182,9 +194,27 @@ layout: section
 - 値の一元管理
 - テーマ切り替えの実装
 
+---
 
+# :has() セレクタ
 
+```css
+.card:has(.image) {
+  padding: 0;
+}
 
+form:has(:invalid) {
+  border-color: red;
+}
+```
+
+- 子要素に基づいて親要素のスタイルを変更
+- 従来だとJSで実装する必要があった
+- inputの状況に応じたスタイル制御が可能に
+
+- デモ： https://codepen.io/tonkotsuboy/pen/rNqxaQJ
+
+<FooterNote>https://coliss.com/articles/build-websites/operation/css/css-has-pseudo-class.html</FooterNote>
 ---
 
 # CSS Nesting (Before)
@@ -204,11 +234,11 @@ layout: section
 
 ```
 
-- 親クラスを記述する必要がある
+- 毎回親クラスを記述する必要があった
 
 ---
 
-# CSS Nesting
+# CSS Nesting (After)
 
 ```css
 .card {
@@ -224,128 +254,111 @@ layout: section
 }
 ```
 
-- SASSライクな記法
+- 従来SASSでしか書けなかった記法
 - コードの可読性向上
 - メンテナンス性の改善
 
 ---
 
-# :has() セレクタ
+# コンテナクエリ @container
 
 ```css
-.card:has(.image) {
-  padding: 0;
+/* コンテナの定義 */
+.container {
+  container-type: inline-size;
 }
 
-form:has(:invalid) {
-  border-color: red;
+/* コンテナクエリの記述 */
+@container (width <= 400px) {
+  /* スタイルの定義 */
+  .card {
+    padding: 1rem;
+  }
 }
 ```
 
-- 親要素に基づく条件分岐
-- 動的なスタイル制御が可能に
+- メディアクエリ（@media）が画面幅に基づくのに対し、コンテナクエリは要素幅に基づく
+- コンポーネントベースの設計に適している
+- サイドバーやカード型UIの実装に便利
+- デモ: [Simple CQ Demo](https://codepen.io/web-dot-dev/pen/dymdbpg)
 
----
-
-# @layer による詳細度制御
-
-```css
-@layer base, components, utilities;
-
-@layer base {
-  /* ベーススタイル */
-}
-
-@layer components {
-  /* コンポーネントスタイル */
-}
-```
-
-- 詳細度の明示的な制御
-- カスケーディングの管理
-- スタイルの優先順位付け
-
----
-
-# モダンCSSツール群
-
-- **PostCSS**
-  - プラグインベースの変換ツール
-  - 最新機能の先行利用
-
-- **CSS Modules**
-  - スコープ付きのスタイル
-  - コンポーネントベースの開発
-
-- **Tailwind CSS**
-  - ユーティリティファースト
-  - 高速な開発と保守性
-
----
-
-# デバッグテクニック
-
-```css
-* {
-  outline: 1px solid red;
-}
-
-/* レイアウトデバッグ用 */
-body {
-  background: #f0f0f0;
-  grid-template-columns: repeat(12, 1fr);
-}
-```
-
-- ブラウザの開発者ツール活用
-- アウトラインデバッグ
-- グリッドオーバーレイ
-
----
-
-# 情報収集リソース
-
-- **MDN Web Docs**
-  [MDN](https://developer.mozilla.org/ja/docs/Web/CSS)
-
-- **Can I use**
-  - ブラウザサポート確認
-  - 機能の互換性チェック
-
----
-
-# CSS3とはなにか
-
-- CSS2.1以降、各モジュールが機能を追加していく形に変化した
-- CSS3とはCSS2.1+追加モジュールの総称
-
-![](./CSSLevel.jpg)
-
-<footerNote>https://techracho.bpsinc.jp/hachi8833/2016_10_03/26581</footerNote>
-
-<!-- https://zenn.dev/helloiamktn/articles/444a937f41238d -->
-
----
-
-# CSS3と未来
-
-- **モジュール化されたCSS**
-  - CSS2.1をベースに拡張
-  - 継続的な機能追加
-
-- **将来の展望**
-  - Chrome 131以降のAIサポート
-  - コンテナクエリ
-  - カスケードレイヤー
+<FooterNote>https://coliss.com/articles/build-websites/operation/css/container-and-has-in-chrome105.html</FooterNote>
 
 ---
 
 # 参考資料
 
 - [HTMLやCSSのレイアウトの歴史を振り返る #HTML5 - Qiita](https://qiita.com/otome0927@github/items/8428265ae6caf98afb94)
-- 
+[2023年モダンCSSの最新トレンド - Speaker Deck](https://speakerdeck.com/tonkotsuboy_com/2023nian-modancssnozui-xin-torendo)
+<!-- - [2023年モダンCSSの最新トレンド](https://tonkotsuboy.github.io/20230413_findy_css/#1) -->
+
+---
+layout: section
+---
+
+# Appendix
+
+---
+
+# 時間があったら話したいコーナー
+- Chrome開発者ツール
+- CSSの情報収集ソース
+- CSS3とはなにか
+- リセットCSS
+
+---
+
+# Chrome開発者ツール
+
+- 131からAIが搭載される
+- grid, flexboxのプレビューが可能
+
+---
+
+# 情報収集ソース
+
+- [MDN](https://developer.mozilla.org/ja/docs/Web/CSS)
+  - リファレンス
+  - ブラウザサポート確認
+
+- [コリス](https://coliss.com/)
+  - 情報キャッチアップ
+  - かなり更新が早い
+
+ <!-- [CSS-Tricks](https://css-tricks.com/) -->
+
+---
+
+# CSS3とはなにか
+
+- CSS2.1以降、各モジュールが機能を追加していく形に変化した
+- CSS3とはCSS2.1+追加モジュールの総称で単一の規格ではない
+
+![](./CSSLevel.jpg)
+
+<footerNote>https://techracho.bpsinc.jp/hachi8833/2016_10_03/26581</footerNote>
+
+<!-- https://zenn.dev/helloiamktn/articles/444a937f41238d 
+https://allabout.co.jp/gm/gc/376450/
+https://zenn.dev/helloiamktn/articles/444a937f41238d#css-level-2.1-(css2.1)
+-->
+
+---
+
+# CSSがW3C勧告になるまで
+
+[W3C勧告とはなんぞ？Web標準化とW3Cにおける勧告プロセスについて | WEMO](https://wemo.tech/795#index_id6)
+
+今あるCSSのドキュメント
+[CSS current work & how to participate](https://www.w3.org/Style/CSS/current-work)
 
 
+<FooterNote>https://www.w3.org/Style/CSS/</FooterNote>
+
+<!-- [CSS Grid Layout Module Level 2](https://drafts.csswg.org/css-grid/)
+[CSS Working Group Editor Drafts](https://drafts.csswg.org/) 
+[CSSの仕様が標準化されるまで](https://zenn.dev/helloiamktn/articles/444a937f41238d)
+-->
 ---
 
 # リセットCSS
@@ -356,3 +369,10 @@ body {
 <footerNote>https://coliss.com/articles/build-websites/operation/css/css-reset-for-modern-browser.html</footerNote>
 
 <!-- 社内で用いられているRIFFのリセットCSSも改善の余地があるかも...? -->
+
+---
+
+# 書き方のテクニック
+
+この辺りの記事を参考にするとよいかも
+[プロが実践するモダン CSS の書き方入門テクニック20選まとめ | PhotoshopVIP](https://photoshopvip.net/93818)
